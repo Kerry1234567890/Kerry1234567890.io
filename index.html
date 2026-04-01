@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Мадока Магика</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a0a1f, #03030c);
+            font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'Poppins', sans-serif;
+            color: #f0eef7;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .grid-main {
+            display: grid;
+            grid-template-columns: 1fr minmax(280px, 1200px) 1fr;
+            grid-auto-rows: auto;
+            row-gap: 3rem;
+        }
+
+        .grid-main > * {
+            grid-column: 2 / 3;
+        }
+        .hero-full {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(30, 12, 48, 0.85), rgba(10, 5, 25, 0.92)), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDMiIGQ9Ik0yMCAzTDMgMTBsMTcgNyAxNy03LTE3LTd6bTAgMjBsLTE3LTcgMTcgNyAxNy03LTE3LTd6bTAgMTBsLTE3LTcgMTcgNyAxNy03LTE3LTd6Ii8+PC9zdmc+');
+            background-repeat: repeat;
+            background-size: 32px;
+            border-bottom: 2px solid rgba(235, 140, 200, 0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem 5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4.2rem;
+            font-weight: 800;
+            background: linear-gradient(125deg, #FFB7E8, #D96CFF, #AA6DFF);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(210, 80, 220, 0.4);
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            font-weight: 300;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            padding: 0.5rem 1.8rem;
+            border-radius: 60px;
+            display: inline-block;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 160, 220, 0.6);
+        }
+
+        .hero-desc {
+            max-width: 700px;
+            font-size: 1.2rem;
+            color: #ddd9ff;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: rgba(30, 20, 55, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid #ff93d0;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #ffe6fc;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(95deg, #b93bc6, #8a4fff);
+            border: none;
+            box-shadow: 0 6px 14px rgba(180, 70, 200, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(95deg, #cf4ae0, #9f66ff);
+            box-shadow: 0 10px 22px rgba(190, 80, 210, 0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 140, 210, 0.2);
+            border-color: #ffb0e6;
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title span {
+            background: linear-gradient(120deg, #f3b0ff, #c28aff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            border-bottom: 3px solid #df8eff;
+            padding-bottom: 5px;
+        }
+
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .character-card {
+            background: rgba(20, 12, 38, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(200, 130, 255, 0.3);
+            text-align: center;
+            box-shadow: 0 12px 20px -12px rgba(0,0,0,0.5);
+        }
+
+        .character-card:hover {
+            transform: translateY(-8px);
+            border-color: #e78aff;
+            background: rgba(30, 18, 55, 0.85);
+            box-shadow: 0 20px 30px -10px rgba(160, 80, 220, 0.4);
+        }
+
+        .photo-container {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 1rem auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #e78aff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #6b3e8a, #3a235a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .character-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .no-photo {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #6b3e8a, #3a235a);
+            color: #ffd6ff;
+            font-size: 3rem;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .no-photo span {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .character-card h3 {
+            font-size: 1.8rem;
+            margin: 0.5rem 0 0.25rem;
+            color: #ffddfc;
+        }
+
+        .char-role {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: #4a2b6e80;
+            display: inline-block;
+            padding: 0.2rem 0.9rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .char-desc {
+            font-size: 0.95rem;
+            color: #cbc3f0;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-hint {
+            margin-top: 12px;
+            font-size: 0.7rem;
+            opacity: 0.6;
+            background: rgba(0,0,0,0.4);
+            padding: 4px 8px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .theme-item {
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 2rem;
+            padding: 1.8rem;
+            border-left: 4px solid #e97cff;
+            transition: 0.2s;
+        }
+
+        .theme-item h4 {
+            font-size: 1.6rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-card {
+            background: linear-gradient(145deg, #17112e, #0e0922);
+            border-radius: 1.8rem;
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 1rem;
+            border: 1px solid #4a2d74;
+            transition: all 0.2s;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            border-color: #b577e0;
+        }
+
+        .gallery-img-container {
+            width: 100%;
+            height: 220px;
+            background: #1f1736;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2c2147;
+            color: #c5a3ff;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .gallery-card p {
+            padding: 0.8rem 0.5rem 0.3rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .photo-note {
+            font-size: 0.7rem;
+            color: #aa99dd;
+            margin-top: 0.3rem;
+            padding: 0 0.5rem 0.5rem;
+        }
+
+        .quote-block {
+            background: rgba(80, 40, 110, 0.3);
+            border-radius: 3rem;
+            padding: 2.5rem;
+            text-align: center;
+            border: 1px solid #cd8eff;
+            backdrop-filter: blur(5px);
+            margin: 1rem 0;
+        }
+
+        .quote-text {
+            font-size: 1.5rem;
+            font-style: italic;
+            font-weight: 400;
+            color: #f2e3ff;
+        }
+
+        .quote-author {
+            margin-top: 1rem;
+            font-weight: 300;
+        }
+
+        .sakura-deco {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.6;
+            margin-top: 1rem;
+        }
+
+        footer {
+            grid-column: 1 / -1;
+            background: #02010fcc;
+            backdrop-filter: blur(4px);
+            margin-top: 2rem;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-top: 1px solid #9045bb;
+            font-size: 0.9rem;
+        }
+
+        .info-box {
+            background: rgba(100, 50, 140, 0.3);
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border: 1px dashed #c28aff;
+        }
+
+        .info-box code {
+            background: #1e102e;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #ffb7e8;
+        }
+
+        @media (max-width: 780px) {
+            h1 { font-size: 2.6rem; }
+            .section-title { font-size: 2rem; }
+            .photo-container { width: 150px; height: 150px; }
+            .quote-text { font-size: 1.2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .characters-grid, .themes-grid, .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .instruction {
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: 0.8rem;
+            color: #cbadff;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-main">
+        <div class="hero-full">
+            <div class="hero-content">
+                <h1>Puella Magi<br>Madoka Magica</h1>
+                <p class="hero-desc">
+                    История о девочках, заключивших контракт с таинственным существом Кьюбэем.<br>
+                    Став магическими девочками, они обретают силу… но теряют нечто большее.
+                </p>
+                
+            </div>
+        </div>
+
+        <section>
+            <h2 class="section-title"><span>Магические девочки</span></h2>
+            <div class="characters-grid">
+                
+                <div class="character-card">
+                    <div class="photo-container">
+                        <img class="character-photo" src="images/Magia.webp" alt="Канамэ Мадока">
+                    </div>
+                    <h3>Канамэ Мадока</h3>
+                    <div class="char-role">Главная героиня</div>
+                    <p class="char-desc">Добрая и самоотверженная, её желание — спасти всех. Становится символом надежды, меняя правила мироздания.</p>
+                </div>
+                
+                <div class="character-card">
+                    <div class="photo-container">
+                        <img class="character-photo" src="images/Homura.webp" alt="Акеми Хомура">
+                    </div>
+                    <h3>Акеми Хомура</h3>
+                    <div class="char-role">Загадочная одиночка</div>
+                    <p class="char-desc">Путешественница во времени, чья любовь к Мадоке переплетает судьбы. Её решимость не знает границ.</p>
+                </div>
+                
+                <div class="character-card">
+                    <div class="photo-container">
+                        <img class="character-photo" src="images/Mami.webp" alt="Томоэ Мами">
+                    </div>
+                    <h3>Томоэ Мами</h3>
+                    <div class="char-role">Опытный наставник</div>
+                    <p class="char-desc">Элегантная и сильная сеньор-махо-сёдзё. Мечтает о товарищах, с которыми можно разделить бремя битвы.</p>
+                </div>
+                
+                <div class="character-card">
+                    <div class="photo-container">
+                        <img class="character-photo" src="images/Sayaka.webp" alt="Мики Сёко">
+                    </div>
+                    <h3>Мики Сёко</h3>
+                    <div class="char-role">Верная подруга</div>
+                    <p class="char-desc">Жизнерадостная и импульсивная. Её желание, загаданное ради любви, оборачивается трагедией.</p>
+                </div>
+                
+                <div class="character-card">
+                    <div class="photo-container">
+                        <img class="character-photo" src="images/Kyoko.webp" alt="Сакура Кёко">
+                    </div>
+                    <h3>Сакура Кёко</h3>
+                    <div class="char-role">Боевой авантюрист</div>
+                    <p class="char-desc">Жестокая на первый взгляд, но глубоко преданная. Ценит еду и собственную философию выживания.</p>
+                </div>
+                
+                <div class="character-card">
+                    <div class="photo-container">
+                        <img class="character-photo" src="images/Kyubey.webp" alt="Кьюбэй">
+                    </div>
+                    <h3>Кьюбэй</h3>
+                    <div class="char-role">Инкубатор</div>
+                    <p class="char-desc">Внешне милое существо, но его мотивы лежат далеко за пределами человеческой морали. Контракт — всегда сделка.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span> Ключевые темы и символизм </span></h2>
+            <div class="themes-grid">
+                <div class="theme-item">
+                    <h4> Жертва & Надежда</h4>
+                    <p>Мадока Магика переворачивает жанр махо-сёдзё: каждое желание имеет трагическую цену. Надежда и отчаяние переплетаются в единый узел.</p>
+                </div>
+                <div class="theme-item">
+                    <h4> Цикличность судьбы</h4>
+                    <p>Путешествия Хомуры во времени показывают, как попытки изменить прошлое ведут к ещё более горьким последствиям.</p>
+                </div>
+                <div class="theme-item">
+                    <h4> Эгоизм vs Альтруизм</h4>
+                    <p>Желания каждой девочки раскрывают их внутренние конфликты — от самопожертвования до отчаянного эгоизма.</p>
+                </div>
+                <div class="theme-item">
+                    <h4> Ведьмы & Искажение</h4>
+                    <p>Магические девочки обречены превращаться в ведьм — метафора потери себя и выгорания в погоне за идеалами.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span> Галерея культовых сцен </span></h2>
+            <div class="gallery-grid">
+                
+                <div class="gallery-card">
+                    <div class="gallery-img-container">
+                        <img class="gallery-img" src="images/1.png" alt="Сцена в пустоши">
+                    </div>
+                    <p>Сцена в пустоши: истина о ведьмах</p>
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-img-container">
+                        <img class="gallery-img" src="images/2.webp" alt="Превращение Мадоки">
+                    </div>
+                    <p>Превращение Мадоки — закон надежды</p>
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-img-container">
+                        <img class="gallery-img" src="images/3.jpg" alt="Новая вселенная Мадоки">
+                    </div>
+                    <p>Финал: новая вселенная Мадоки</p>
+
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-img-container">
+                        <img class="gallery-img" src="images/4.jpg" alt="Битва Хомуры">
+                    </div>
+                    <p>Битва Хомуры против Вальпургиевой ночи</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="quote-block">
+            <div class="quote-text">
+                «Если кто-то говорит, что это глупо — надеяться, я всё равно буду спорить с ними. Ведь я помню... сияние надежды».
+            </div>
+            <div class="quote-author">— Канамэ Мадока</div>
+            <div class="sakura-deco">✧ 魔法少女まどか☆マギカ ✧</div>
+        </div>
+
+        <footer>
+            <p style="margin-top: 1rem;">🌸 Свет надежды никогда не угаснет 🌸</p>
+        </footer>
+    </div>
+</body>
+</html>
